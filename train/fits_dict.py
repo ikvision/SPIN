@@ -18,17 +18,17 @@ class FitsDict():
         # Load dictionary state
         for ds_name, ds in train_dataset.dataset_dict.items():
             try:
-                dict_file = os.path.join(options.checkpoint_dir, ds_name + '_fits.npy')
+                dict_file = os.path.joint(options.checkpoint_dir, ds_name + '_fits.npy')
                 self.fits_dict[ds_name] = torch.from_numpy(np.load(dict_file))
             except IOError:
                 # Dictionary does not exist, so populate with static fits
-                dict_file = os.path.join(config.STATIC_FITS_DIR, ds_name + '_fits.npy')
+                dict_file = os.path.joint(config.STATIC_FITS_DIR, ds_name + '_fits.npy')
                 self.fits_dict[ds_name] = torch.from_numpy(np.load(dict_file))
 
     def save(self):
         """ Save dictionary state to disk """
         for ds_name in self.train_dataset.dataset_dict.keys():
-            dict_file = os.path.join(self.options.checkpoint_dir, ds_name + '_fits.npy')
+            dict_file = os.path.joint(self.options.checkpoint_dir, ds_name + '_fits.npy')
             np.save(dict_file, self.fits_dict[ds_name].cpu().numpy())
 
     def __getitem__(self, x):
@@ -61,7 +61,7 @@ class FitsDict():
 
     def flip_pose(self, pose, is_flipped):
         """flip SMPL pose parameters"""
-        is_flipped = is_flipped.byte()
+        is_flipped = is_flipped.bool()
         pose_f = pose.clone()
         pose_f[is_flipped, :] = pose[is_flipped][:, self.flipped_parts]
         # we also negate the second and the third dimension of the axis-angle representation
