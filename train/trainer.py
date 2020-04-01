@@ -119,7 +119,7 @@ class Trainer(BaseTrainer):
         is_flipped = input_batch['is_flipped'] # flag that indicates whether image was flipped during data augmentation
         rot_angle = input_batch['rot_angle'] # rotation angle used for data augmentation
         dataset_name = input_batch['dataset_name'] # name of the dataset the image comes from
-        indices = input_batch['sample_index'] # index of example inside its dataset
+        indices = input_batch['sample_index'] # index of example inside it's dataset
         batch_size = images.shape[0]
 
         # Get GT vertices and model joints
@@ -255,7 +255,7 @@ class Trainer(BaseTrainer):
         loss = self.options.shape_loss_weight * loss_shape +\
                self.options.keypoint_loss_weight * loss_keypoints +\
                self.options.keypoint_loss_weight * loss_keypoints_3d +\
-               loss_regr_pose + self.options.beta_loss_weight * loss_regr_betas +\
+               self.options.pose_loss_weight * loss_regr_pose + self.options.beta_loss_weight * loss_regr_betas +\
                ((torch.exp(-pred_camera[:,0]*10)) ** 2 ).mean()
         loss *= 60
 
